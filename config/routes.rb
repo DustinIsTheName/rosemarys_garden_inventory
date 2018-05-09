@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  post '/order-creation' => 'products#order_creation'
+  post '/product-update' => 'products#product_update'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
