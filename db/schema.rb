@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180508162748) do
+ActiveRecord::Schema.define(version: 20180511202952) do
 
   create_table "products", force: :cascade do |t|
-    t.integer  "one_oz_shopify_id"
-    t.integer  "tenth_oz_shopify_id"
+    t.integer  "one_oz_shopify_id",   limit: 8
+    t.integer  "tenth_oz_shopify_id", limit: 8
     t.integer  "one_oz_quantity"
     t.integer  "tenth_oz_quantity"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
 end
