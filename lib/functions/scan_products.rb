@@ -8,6 +8,11 @@ class ScanProducts
 			block = block.last
 			puts Colorize.purple(block)
 
+			if ShopifyAPI.credit_left < 5
+				puts "We have to wait 3 seconds then we will resume. Credit left: #{ShopifyAPI.credit_left}"
+				sleep 3
+			end
+
 			if block["type"] == "product-set"
 				product = Product.new
 				product_one_oz = ShopifyAPI::Product.find(:first, params: {handle: block["settings"]["product_one_oz"]})
