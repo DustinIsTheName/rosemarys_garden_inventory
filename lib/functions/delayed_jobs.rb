@@ -6,6 +6,12 @@ class DelayedJobs
 		settings_json = JSON.parse(settings_data.value)
 
 		for item in params["line_items"]
+
+			if ShopifyAPI.credit_left < 5
+				puts Colorize.bright('about to exceed credit, waiting 10 seconds')
+				sleep 10
+			end
+
 			if item["product_id"]
 				product = ShopifyAPI::Product.find(item["product_id"])
 				linked_product = false
@@ -100,6 +106,11 @@ class DelayedJobs
 	end
 
 	def self.product_update(params)
+		if ShopifyAPI.credit_left < 5
+			puts Colorize.bright('about to exceed credit, waiting 10 seconds')
+			sleep 10
+		end
+			
 		theme = ShopifyAPI::Theme.all.select{|t| t.role == 'main'}.first
 		settings_data = ShopifyAPI::Asset.find('config/settings_data.json', :params => {:theme_id => theme.id})
 		settings_json = JSON.parse(settings_data.value)
@@ -190,6 +201,23 @@ class DelayedJobs
 				end
 			end
 		end
+	end
+
+	def self.create_product(one_oz_id, tenth_oz_id, one_inventory_quantity, tenth_inventory_quantity)
+		product = Product.new
+
+		product.one_oz_shopify_id = one_oz_id
+		product.tenth_oz_shopify_id = tenth_oz_id
+		product.one_oz_quantity = one_inventory_quantity
+		product.tenth_oz_quantity = tenth_inventory_quantity
+
+		if product.save
+			puts Colorize.purple('created internal product')
+		else
+			puts Colorize.red('error creating internal product')
+		end
+
+		product
 	end
 
 end

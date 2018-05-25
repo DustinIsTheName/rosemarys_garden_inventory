@@ -7,10 +7,6 @@ class ProductsController < ApplicationController
 
 		verified = verify_webhook(request.body.read, request.headers["HTTP_X_SHOPIFY_HMAC_SHA256"])
 		if verified
-			if ShopifyAPI.credit_left < 5
-				puts Colorize.bright('about to exceed credit, waiting 10 seconds')
-				sleep 10
-			end
 			DelayedJobs.delay.order_creation(params)
 		end
 
@@ -22,10 +18,6 @@ class ProductsController < ApplicationController
 
 		verified = verify_webhook(request.body.read, request.headers["HTTP_X_SHOPIFY_HMAC_SHA256"])
 		if verified
-			if ShopifyAPI.credit_left < 5
-				puts Colorize.bright('about to exceed credit, waiting 10 seconds')
-				sleep 10
-			end
 			DelayedJobs.delay.product_update(params)
 		end
 
